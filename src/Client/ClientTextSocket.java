@@ -11,6 +11,7 @@ public class ClientTextSocket extends Thread
 	private Socket socket; // socket
 	private DataInputStream dIn; // input
 	private DataOutputStream dOut; // output
+	private TextViewer textView; // send input to here
 
 	/*
 	 * Initialize stuff
@@ -28,14 +29,20 @@ public class ClientTextSocket extends Thread
 	}
 
 	/*
-	 * Infinite loop for getting input from the server
+	 * Set the textViewer that all messages get passed to
+	 */
+	public void setViewer(TextViewer tv) {
+		textView = tv; }
+	
+	/*
+	 * Main loop for getting input from the server
 	 */
 	public void run()
 	{
 		while(open) {
 			try {
 				String m = dIn.readUTF(); // get messages from the serverS
-				// message display call here
+				textView.addText(m + "\n");
 			} catch (Exception e) {
 				ErrorDisplay.showError(e);
 			}

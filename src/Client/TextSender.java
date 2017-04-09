@@ -10,6 +10,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
+/*
+ * This class is the container that holds the text area and button to send text to the chat
+ * This class interfaces with the client text socket to send out messages
+ * Once initialized, just add this to the main window
+ */
 public class TextSender extends Container
 {
 	// modify to change how space is shared between button and text field

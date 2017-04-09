@@ -1,11 +1,13 @@
 package Client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /*
  * This class starts and displays the client application
@@ -22,7 +24,9 @@ public class MainWindow extends JFrame
 	private ClientTextSocket textSock;
 	// container for text sending components
 	private TextSender textSend;
-
+	// container for text viewer components
+	private TextViewer textView;
+	
 	public MainWindow()
 	{
 		// setup connection first
@@ -32,9 +36,12 @@ public class MainWindow extends JFrame
 		// now make the window
 		setLayout(new BorderLayout()); // use border layout
 		setSize(800,600); // set a window size so window doesn't start at size 0,0
+		setBackground(Color.BLACK);
 		addWindowListener(new WindowCloseListener()); // add listener to disconnect on window close
 		textSend = new TextSender(textSock); // create the text sender
 		add(textSend, BorderLayout.PAGE_END); // add it to the bottom of the window
+		textView = new TextViewer(textSock, new JTextArea()); // create the text viewer
+		add(textView, BorderLayout.CENTER); // add it to the left of the window
 	}
 
 	/*
