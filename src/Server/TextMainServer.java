@@ -3,6 +3,7 @@ package Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 /*
@@ -14,7 +15,7 @@ public class TextMainServer extends Thread
 	private int portNum; // port number
 	private ServerSocket connector; // socket to receive connections
 	private static ArrayList<TextServer> connections; // list of all connections to clients
-	private static boolean shutdown; // deterines when to shutdown
+	private static boolean shutdown; // determines when to shutdown
 	
 	public TextMainServer(int pn) throws IOException
 	{
@@ -22,6 +23,7 @@ public class TextMainServer extends Thread
 		connections = new ArrayList<TextServer>(); // init
 		portNum = pn; // copy port number
 		connector = new ServerSocket(portNum); // init ServerSocket
+		connector.setSoTimeout(1000);
 	}
 	
 	/*
@@ -35,7 +37,9 @@ public class TextMainServer extends Thread
 				Socket s = connector.accept(); // wait for connection
 				TextServer ts = new TextServer(s); // create class to manage connection
 				connections.add(ts); // add to list of connections
-				ts.run(); // start connection manager
+				ts.start(); // start connection manager
+			} catch (SocketTimeoutException e) {
+				// do nothing, too many of these
 			} catch (IOException e) {
 				ServerStartup.printError(e);
 			}
@@ -48,6 +52,7 @@ public class TextMainServer extends Thread
 		} catch (IOException e) {
 			ServerStartup.printError(e);
 		}
+		ServerStartup.print("Closing text server");
 	}
 	
 	/*
@@ -56,7 +61,7 @@ public class TextMainServer extends Thread
 	 */
 	public static void removeConnection(TextServer ts)
 	{
-		ts.send("");
+		ts.close();
 		connections.remove(ts);
 	}
 	
@@ -65,6 +70,7 @@ public class TextMainServer extends Thread
 	 * Logs the message and send it back to all clients to display in chat
 	 */
 	public static void receive(String m) {
+		ServerStartup.print(m);
 		for(TextServer ts : connections) {
 			ts.send(m); }
 	}
@@ -73,5 +79,6 @@ public class TextMainServer extends Thread
 	 * Call this to stop the main loop and shut down the message server
 	 */
 	public static void shutdown() {
+		ServerStartup.print("shutting down");
 		shutdown = true; }
 }
