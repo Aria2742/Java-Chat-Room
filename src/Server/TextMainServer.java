@@ -52,7 +52,7 @@ public class TextMainServer extends Thread
 		} catch (IOException e) {
 			ServerStartup.printError(e);
 		}
-		ServerStartup.print("Closing text server");
+		ServerStartup.print("text server closed");
 	}
 	
 	/*
@@ -70,7 +70,6 @@ public class TextMainServer extends Thread
 	 * Logs the message and send it back to all clients to display in chat
 	 */
 	public static void receive(String m) {
-		ServerStartup.print(m);
 		for(TextServer ts : connections) {
 			ts.send(m); }
 	}
@@ -79,6 +78,6 @@ public class TextMainServer extends Thread
 	 * Call this to stop the main loop and shut down the message server
 	 */
 	public static void shutdown() {
-		ServerStartup.print("shutting down");
+		ServerStartup.print("shutting down text server");
 		shutdown = true; }
 }

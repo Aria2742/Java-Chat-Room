@@ -65,7 +65,7 @@ public class TextServer extends Thread
 	 * Close the server's connection to the client
 	 */
 	public void close() {
-		ServerStartup.print("closing socket");
+		ServerStartup.print("closing connection to " + connection.getRemoteSocketAddress().toString());
 		open = false; // stop the loop for getting input from client
 		try {
 			send(""); // tell connected socket that this is closing
