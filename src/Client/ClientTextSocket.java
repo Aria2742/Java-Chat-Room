@@ -12,14 +12,16 @@ public class ClientTextSocket extends Thread
 	private DataInputStream dIn; // input
 	private DataOutputStream dOut; // output
 
-	// init
+	/*
+	 * Initialize stuff
+	 */
 	public ClientTextSocket(String addr)
 	{
-		open = true;
+		open = true; // socket just made, so keep it open
 		try {
-			socket = new Socket(addr, TEXT_SERVER_PORT);
-			dIn = new DataInputStream(socket.getInputStream());
-			dOut = new DataOutputStream(socket.getOutputStream());
+			socket = new Socket(addr, TEXT_SERVER_PORT); // make socket
+			dIn = new DataInputStream(socket.getInputStream()); // get input stream
+			dOut = new DataOutputStream(socket.getOutputStream()); // get output stream
 		} catch(Exception err) {
 			ErrorDisplay.showError(err);
 		}
@@ -32,8 +34,8 @@ public class ClientTextSocket extends Thread
 	{
 		while(open) {
 			try {
-				String m = dIn.readUTF(); // send received messages to text management
-				System.out.println(m);
+				String m = dIn.readUTF(); // get messages from the serverS
+				// message display call here
 			} catch (Exception e) {
 				ErrorDisplay.showError(e);
 			}
@@ -52,15 +54,15 @@ public class ClientTextSocket extends Thread
 	public void sendMessage(String s)
 	{
 		try {
-			dOut.writeUTF(s);
-			dOut.flush();
+			dOut.writeUTF(s); // write message
+			dOut.flush(); // push message out
 		} catch (Exception err) {
 			ErrorDisplay.showError(err);
 		}
 	}
 	
 	public void close() {
-		open = false;
+		open = false; // tell thread to stop loop
 		sendMessage(""); // send message to close connection
 	}
 }
