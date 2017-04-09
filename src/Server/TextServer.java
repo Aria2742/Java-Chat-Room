@@ -25,6 +25,7 @@ public class TextServer extends Thread
 		} catch (Exception e) {
 			ServerStartup.printError(e);
 		}
+		ServerStartup.print("new client connected from " + connection.getRemoteSocketAddress().toString());
 	}
 	
 	/*
