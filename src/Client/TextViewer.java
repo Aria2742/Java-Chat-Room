@@ -20,6 +20,7 @@ public class TextViewer extends JScrollPane
 		super(ta); // call super constructor
 		textArea = ta; // set textArea
 		textArea.setEditable(false); // set text area to not be editable
+		textArea.setLineWrap(true); // allow line wrap
 		setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); // set scroll bar to be vertical
 		//setPreferredSize(new Dimension(500,500)); // needed?
 		sock.setViewer(this); // pass this to the text socket
