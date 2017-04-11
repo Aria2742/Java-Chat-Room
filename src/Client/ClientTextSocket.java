@@ -45,6 +45,7 @@ public class ClientTextSocket extends Thread
 				textView.addText(m + "\n");
 			} catch (Exception e) {
 				ErrorDisplay.showError(e);
+				open = false;
 			}
 		}
 		// out of loop now, so close socket
