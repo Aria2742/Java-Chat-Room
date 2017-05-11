@@ -9,34 +9,49 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-/*
- * This class starts and displays the client application
- * Communication between components and sockets is set up in this class as well
+/**
+ * @author Nathan Augsburger
+ * 
+ * This class starts and displays the client application. All components for the application 
+ * (such as text, drawing, etc) will each have their own containers that are added into this 
+ * class. The window also has a listener to shut down the connections when the window is closed.
  */
 public class MainWindow extends JFrame
 {
-	public static void main(String[] args)
-	{
-		new MainWindow().setVisible(true);
-	}
+	/**
+	 * Starts the application be initializing an instance of this class.
+	 * @param args ignored
+	 */
+	public static void main(String[] args) {
+		new MainWindow().setVisible(true); }
 
-	// socket for receiving and sending text
+	/** Socket that manages text communication with the server .*/
 	private ClientTextSocket textSock;
-	// container for text sending components
-	private TextSender textSend;
-	// container for text viewer components
+	/** Container for text sending components. */
+	private TextSender textSend; 
+	/** Container for text viewing components. */
 	private TextViewer textView;
 	
+	/**
+	 * Constructs a new JFrame with all the components of the application included. 
+	 * Components such as sockets, text, and drawing areas are all initialized and 
+	 * added into this JFrame object. The application is initially visible and 800 x 600 
+	 * in size. On an error in socket connection, this method returns and closes any open 
+	 * resources. NOTE: May need to change window layout when drawing component is added.
+	 */
 	public MainWindow()
 	{
 		// setup connection first
 		String IP = JOptionPane.showInputDialog("Enter the IP of the server");
 		textSock = new ClientTextSocket(IP);
+		if(!textSock.isValid()) {
+			System.exit(-1); } // exit on error if the text socket is not valid
 		textSock.start(); // run the socket thread
-		// now make the window
+		// now do the window settings and whatnot
 		setLayout(new BorderLayout()); // use border layout
 		setSize(800,600); // set a window size so window doesn't start at size 0,0
 		setBackground(Color.BLACK);
+		// now add the components
 		addWindowListener(new WindowCloseListener()); // add listener to disconnect on window close
 		textSend = new TextSender(textSock); // create the text sender
 		add(textSend, BorderLayout.PAGE_END); // add it to the bottom of the window
@@ -45,12 +60,14 @@ public class MainWindow extends JFrame
 	}
 
 	/*
-	 * Class to disconnect socket from the server on window close
-	 * Does nothing on any other window event
+	 * This class closes all open sockets when the window is closed. Nothing occurs 
+	 * on any other WindowEvent.
 	 */
 	private class WindowCloseListener implements WindowListener
 	{
-		// close server connection on window close
+		/**
+		 * Closes the server connections when the window closes and exits the program.
+		 */
 		public void windowClosing(WindowEvent e) {
 			textSock.close(); // close the socket
 			System.exit(0); // exit this program

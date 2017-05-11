@@ -2,8 +2,8 @@ package Client;
 
 import javax.swing.JOptionPane;
 
-/*
- * Class to display errors client-side
+/**
+ * NEEDS TO BE REPLACED BY ACTUAL ERROR LOGGING
  */
 public class ErrorDisplay
 {

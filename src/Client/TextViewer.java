@@ -1,20 +1,23 @@
 package Client;
 
-import java.awt.Dimension;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-/*
- * This class displays text received by the server in a scrollable window
- * Initialize with the client text socket (to attach this to the socket) and a JTextPane
- * Once initialized, simply add to the new window
+/**
+ * This class is a scrollable text area for displaying text messages received from the server. 
+ * The pane scrolls only vertically, and the size of the scroll bar changes based on the amount 
+ * of text on the display.
  */
 public class TextViewer extends JScrollPane
 {
+	/** The text area that messages received from the server are written to. */
 	JTextArea textArea;
 	
+	/**
+	 * @param sock the ClientTextSocket that will send messages to this
+	 * @param ta a JTextField to write messages to
+	 */
 	public TextViewer(ClientTextSocket sock, JTextArea ta)
 	{
 		super(ta); // call super constructor
@@ -26,8 +29,9 @@ public class TextViewer extends JScrollPane
 		sock.setViewer(this); // pass this to the text socket
 	}
 	
-	/*
-	 * Adds text to the text area
+	/**
+	 * Appends a message to the JTextField
+	 * @param m the String to append
 	 */
 	public void addText(String m) {
 		textArea.append(m); }
